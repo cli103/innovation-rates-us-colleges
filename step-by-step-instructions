@@ -1,0 +1,68 @@
+Step-by-step instructions for cluster analysis
+
+1.	Import the data from Opportunity Insights into Excel
+2.	Copy the data into a new tab
+3.	Clean the copied data by removing unrelated columns
+    a.	The columns to keep are: ‘instnm’, ‘count’, ‘total_patents’, ‘total_cites’
+4.	Insert a column at the start of the table labelled ‘School #’
+    a.	Generate numbers for all the schools listed
+5.	Copy the clean data set into a new tab
+6.	Label this new tab ‘work’
+7.	Insert 10 cells above the data
+8.	Calculate the mean and standard deviation of each column (‘count’, ‘total_patents’, ‘total_cites’)
+    a.	Formula for mean: =average( )
+    b.	Formula for standard deviation: = stdev( )
+9.	Insert a border to the right of the ‘total_cites’ column
+10.	Create three columns called titled ‘zcount’, ‘ztotal_patents’, ‘ztotal_cities’ for the standardized scores of student population, patent grants and patent citations
+11.	Standardize the data for ‘count’, ‘total_patents’, ‘total_cites’ under the new columns
+    a.	Use the formula =standardize(x, mean, standard deviation)
+        i.	The x value is the original data in the ‘count’, ‘total_patents’, ‘total_cites’ cells
+        ii.	The mean is the corresponding mean for ‘count’, ‘total_patents’, ‘total_cites’ previously calculated
+        iii. The standard deviation is the corresponding standard deviation for ‘count’, ‘total_patents’, ‘total_cites’ previously calculated
+        iv.	Freeze the column for the mean and standard deviation cells using the $ so the formula can be applied to all the ‘zcount’, ‘ztotal_patents’, ‘ztotal_cities’ columns
+12.	Insert a border to the right of the ‘ztotal_cites’ column
+13.	Using the cells above the table create the following columns: ‘Cluster School’, ‘Cluster #’, ‘zcount’, ‘ztotal_patents’, ‘ztotal_cities’
+14.	Choose three cluster numbers and fill them in under the ‘Cluster #’ column
+    a.	These will be used as the anchors for the cluster analysis
+15.	Under the ‘Cluster School column’, apply the vlookup formula to match the selected cluster in the ‘Cluster #’ column to the corresponding school name
+    a.	Use the formula =vlookup(lookup_value, table_array, col_index_num, [range_lookup])
+        i.	The ‘lookup_value’ will be the cluster number
+        ii.	The ‘table_array’ will be the data from the ‘School #’ column to the ‘ztotal_cities’ column
+        iii. The ‘col_index_num’ will be 2 as the ‘instnm’ college name, is the second column
+        iv.	The ‘[range_lookup]’ will be 0 or false for an exact match
+16.	Similarly under the ‘zcount’, ‘ztotal_patents’, ‘ztotal_cities’ columns, apply the vlookup formula to match the selected cluster school to their standardized data
+    a.	Use the formula =vlookup(lookup_value, table_array, col_index_num, [range_lookup])
+        i.	The ‘lookup_value’ will be the cluster number
+    b.	Lock the row using the $
+        ii.	The ‘table_array’ will be the data from the ‘School #’ column to the ‘ztotal_cities’ column
+        iii.	For the ‘col_index_num’, insert numbers above the ‘zcount’, ‘ztotal_patents’, ‘ztotal_cities’. Use numbers 6 – 8 as they correspond to the columns in the data set from the ‘School #’ column to the ‘ztotal_cities’ column. Select the number above the column you are calculating
+    c.	Lock the column using the $
+        iv. The ‘[range_lookup]’ will be 0 or false for an exact match
+17.	Apply the formula to all cells under the ‘zcount’, ‘ztotal_patents’, ‘ztotal_cities’ columns
+18.	Moving back to the main data body, create three columns called titled ‘distsqu1’, ‘distsqu2’, ‘distsqu3’ to the right of the ‘ztotal_cities’ column
+    a.	These columns will be used to calculate the distance squared between the cluster values for student population, patent grants and patent citations and the standardized student population, patent grants and patent citations of each university
+19.	Under the  ‘distsqu1’, ‘distsqu2’, ‘distsqu3’ apply the sum of distance squared formula
+        a.	Use the formula = SUMXMY2(array_x, array_y)
+        b.	The ‘array_x’ are the cluster school’s ‘zcount’, ‘ztotal_patents’, ‘ztotal_cities’
+        c.	The ‘array_y’ are the ‘zcount’, ‘ztotal_patents’, ‘ztotal_cities’ to the left that have been calculated for each school
+            i.	Lock the ‘array_x’ using the $ before the column and row for all values so that all values are calculated from the target cluster point
+        d.	Repeat this method under ‘distsqu1’, ‘distsqu2’, ‘distsqu3’
+20.	Insert a border to the right of the ‘distsqu3’ column
+21.	Create a column labelled ‘min_distsqu’
+        a.	This will be the minimum squared distance of each college to a cluster
+        b.	Use the formula = min(number)
+            i.	For the ‘number’, select the cells under ‘distsqu1’, ‘distsqu2’, ‘distsqu3’
+22.	In a cell above the ‘min_distsqu’, label a cell ‘sum_min_dist’
+        a.	This is the sum of the minimum squared distances of each college to the clusters
+23.	Use the sum formula to calculate the sum of the minimum squared distances
+        a.	Use the formula = sum (number) to sum all of the values under ‘min_distsqu’
+24.	Select the value for ‘sum_min_dist’ and apply the ‘Solver’ tool
+        a.	The ‘Set Objective’ is the value of the sum of the minimum squared distances
+        b.	The changing variable cells are the ‘Cluster #’ cells
+        c.	Set the following constraints
+            i.	The changing variable cells <= 432
+            ii.	The changing variable cells >= 1
+            iii.	The changing variable cells must be integers
+    d.	Change the ‘Solving Method’ to evolutionary
+            i.	Change the ‘Mutation Rate’ to 0.5
+    e.	Click solve and it will generate the 3 major clusters
