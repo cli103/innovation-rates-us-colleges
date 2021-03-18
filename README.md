@@ -17,7 +17,7 @@ Click [here](https://github.com/cli103/innovation-rates-us-colleges/commit/51665
 I generated a three anchor cluster analysis on US colleges based on student population, number of patents granted to students and number of patent citations obtained by students.
 
 Pictured below are the results of the cluster analysis: 
-![alt text](https://github.com/cli103/innovation-rates-us-colleges/commit/637d7cddf60dceb36889b80f19c61c65c1509a68)
+![alt text](Cluster Analysis Results.png)
 
 The University of Kansas cluster consists of schools with above average student count, above average patent grants and a high number of patent citations. The San Mateo County Community College District cluster consists of schools with average student counts, below average patent grants but a high number of patent citations. The Purdue University cluster consists of schools with high student counts, high number of patent grants, and a high number of patent citations.
 
